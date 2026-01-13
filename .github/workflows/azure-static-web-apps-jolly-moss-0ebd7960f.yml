@@ -25,3 +25,4 @@ jobs:
           app_location: "app"
           api_location: ""
           output_location: "dist"
+
