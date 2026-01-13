@@ -14,30 +14,28 @@ jobs:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
     name: Build and Deploy Job
-    permissions:
-      id-token: write
-      contents: read
-
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
 
-      - name: Install Node
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: '18'
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: npm install
-        working-directory: ai/app
+        working-directory: ./ai/app
 
       - name: Build Vite app
         run: npm run build
-        working-directory: ai/app
+        working-directory: ./ai/app
 
       - name: Install OIDC Client from Core Package
-        run: npm install @actions/core@1.6.0 @actions/http-client
+        run: npm install @azure/static-web-apps-cli@latest
+        working-directory: ./ai/app
 
-      - name: Get Id Token
+      - name: Get Token
         uses: actions/github-script@v6
         id: idtoken
         with:
