@@ -50,8 +50,7 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_NICE_SEA_0AC4AFE0F }}
           action: "upload"
-          with:
-          app_location: "accessibility-pro-final"
+          app_location: "src"        # ← CHANGE THIS IF NEEDED
           api_location: ""
           output_location: "dist"
           github_id_token: ${{ steps.idtoken.outputs.result }}
