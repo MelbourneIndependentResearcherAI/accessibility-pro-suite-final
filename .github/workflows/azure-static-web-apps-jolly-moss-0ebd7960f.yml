@@ -1,18 +1,23 @@
-name: Deploy Full App to Azure App Service
+name: Azure Static Web Apps CI/CD
 
 on:
   push:
     branches:
       - main
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches:
+      - main
 
 jobs:
-  build:
+  build_and_deploy_job:
     runs-on: ubuntu-latest
-
+    name: Build and Deploy Job
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      - name: Set up Node
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
@@ -20,32 +25,12 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build frontend
+      - name: Build project
         run: npm run build
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
+      - name: Deploy to Azure Static Web Apps
+        uses: Azure/static-web-apps-deploy@v1
         with:
-          name: app
-          path: |
-            dist
-            backend
-            web.config
-            package.json
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: app
-
-      - name: Deploy to Azure Web App
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: YOUR_AZURE_APP_SERVICE_NAME
+          app-name: accessibility-pro-suite-final
           publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
-          package: .
+          package: dist
