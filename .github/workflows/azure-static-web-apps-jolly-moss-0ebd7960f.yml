@@ -34,3 +34,4 @@ jobs:
           app-name: accessibility-pro-suite-final
           publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
           package: dist
+
