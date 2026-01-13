@@ -17,27 +17,21 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install frontend dependencies
-        working-directory: ./my_app
+      - name: Install dependencies
         run: npm install
 
       - name: Build frontend
-        working-directory: ./my_app
         run: npm run build
-
-      - name: Install backend dependencies
-        working-directory: ./my_app/backend
-        run: npm install
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: app
           path: |
-            my_app/dist
-            my_app/backend
-            my_app/web.config
-            my_app/package.json
+            dist
+            backend
+            web.config
+            package.json
 
   deploy:
     runs-on: ubuntu-latest
