@@ -35,7 +35,7 @@ jobs:
         run: npm run build
         working-directory: ai/app
 
-      - name: Install OIDC Client from Core Package
+      - name: Install OIDC Client
         run: npm install @azure/static-web-apps-cli@latest
         working-directory: ai/app
 
