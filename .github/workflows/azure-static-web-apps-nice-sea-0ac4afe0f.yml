@@ -15,7 +15,6 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     permissions:
-      id-token: write
       contents: read
 
     steps:
@@ -35,21 +34,7 @@ jobs:
         run: npm run build
         working-directory: ai/app
 
-      - name: Install OIDC Client
-        run: npm install @azure/static-web-apps-cli@latest
-        working-directory: ai/app
-
-      - name: Get Token
-        uses: actions/github-script@v6
-        id: idtoken
-        with:
-          script: |
-            const coredemo = require('@actions/core')
-            return await coredemo.getIDToken()
-          result-encoding: string
-
-      - name: Build And Deploy
-        id: builddeploy
+      - name: Deploy to Azure Static Web Apps
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_NICE_SEA_0AC4AFE0F }}
@@ -57,7 +42,6 @@ jobs:
           app_location: "ai/app"
           api_location: ""
           output_location: "ai/app/dist"
-          github_id_token: ${{ steps.idtoken.outputs.result }}
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
@@ -65,7 +49,6 @@ jobs:
     name: Close Pull Request Job
     steps:
       - name: Close Pull Request
-        id: closepullrequest
         uses: Azure/static-web-apps-deploy@v1
         with:
           action: "close"
