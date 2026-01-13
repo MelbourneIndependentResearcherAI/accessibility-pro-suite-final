@@ -14,6 +14,7 @@ jobs:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
     name: Build and Deploy Job
+<<<<<<< HEAD
     permissions:
       id-token: write
       contents: read
@@ -39,6 +40,30 @@ jobs:
         run: npm install @actions/core@1.6.0 @actions/http-client
 
       - name: Get Id Token
+=======
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Dependencies
+        run: npm install
+        working-directory: .github/accessibility-pro-final
+
+      - name: Build Vite app
+        run: npm run build
+        working-directory: .github/accessibility-pro-final
+
+      - name: Install OIDC Client from Core Package
+        run: npm install @azure/static-web-apps-cli@latest
+        working-directory: .github/accessibility-pro-final
+
+      - name: Get Token
+>>>>>>> f0a99fa5df7c6162e941808eb9394e1adec285df
         uses: actions/github-script@v6
         id: idtoken
         with:
@@ -53,9 +78,15 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_NICE_SEA_0AC4AFE0F }}
           action: "upload"
+<<<<<<< HEAD
           app_location: "app"
           api_location: ""
           output_location: "dist"
+=======
+          app_location: ".github/accessibility-pro-final"
+          api_location: ""
+          output_location: ".github/accessibility-pro-final/dist"
+>>>>>>> f0a99fa5df7c6162e941808eb9394e1adec285df
           github_id_token: ${{ steps.idtoken.outputs.result }}
 
   close_pull_request_job:
@@ -68,6 +99,9 @@ jobs:
         uses: Azure/static-web-apps-deploy@v1
         with:
           action: "close"
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> f0a99fa5df7c6162e941808eb9394e1adec285df
